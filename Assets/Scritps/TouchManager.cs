@@ -14,6 +14,8 @@ public class TouchManager : MonoBehaviour
 {
     public LayerMask sphereLayer;
     [SerializeField]
+    private int minLinkAmount = 3;
+    [SerializeField]
     private TouchState state;
     [SerializeField]
     private List<Sphere> link;
@@ -68,13 +70,31 @@ public class TouchManager : MonoBehaviour
             }
             else
             {
+                //* Do nothing
                 // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
                 // Debug.Log("Did not Hit");
             }
         }else if(state == TouchState.Holding)
         {
             state = TouchState.Released;
-            Debug.Log("score: " + link.Count);
+            if(link.Count >= minLinkAmount)
+            StartCoroutine(nameof(Score));
         }
+    }
+
+    private IEnumerator Score()
+    {
+        Debug.Log("score: " + link.Count);
+        foreach (Sphere ball in link)
+        {
+            ball.Deselect();
+            yield return new WaitForSeconds(0.25f);
+            // ball.gameObject.SetActive(false);
+        }
+        yield return null;
+
+        link = new List<Sphere>();
+        state = TouchState.Idle;
+        current.id = -1;
     }
 }
