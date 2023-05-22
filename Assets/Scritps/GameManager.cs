@@ -16,9 +16,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance {get; private set;}
 
     public List<SColor> colors;
+    public BoardManager boardManager;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    public float GetDiagonalDistance()
+    {
+        return Vector2.Distance(Vector2.zero, Vector2.one * boardManager.spacing)+ 0.05f;
     }
 }

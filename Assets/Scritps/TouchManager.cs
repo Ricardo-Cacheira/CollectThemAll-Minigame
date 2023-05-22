@@ -21,6 +21,7 @@ public class TouchManager : MonoBehaviour
     private List<Sphere> link;
     private Camera mainCamera;
     private SColor current;
+    private float diagonaDistance;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class TouchManager : MonoBehaviour
         link = new List<Sphere>();
         state = TouchState.Idle;
         current.id = -1;
+        diagonaDistance = GameManager.Instance.GetDiagonalDistance();
     }
 
     void Update()
@@ -58,7 +60,7 @@ public class TouchManager : MonoBehaviour
                             link[link.Count - 1].Deselect();
                             link.RemoveAt(link.Count - 1);
                         }
-                        else if((Vector3.Distance(link.Last().transform.position, sphere.transform.position) < 1.42f) && sphere.GetColor().id == current.id)
+                        else if((Vector3.Distance(link.Last().transform.position, sphere.transform.position) < diagonaDistance) && sphere.GetColor().id == current.id)
                         {
                             if(!link.Contains(sphere))
                             {
