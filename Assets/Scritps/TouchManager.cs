@@ -51,7 +51,14 @@ public class TouchManager : MonoBehaviour
 
                     if(link.Count > 0)
                     {
-                        if((Vector3.Distance(link.Last().transform.position, sphere.transform.position) < 1.42f) && sphere.GetColor().id == current.id)
+                        if(link.Count > 1 && sphere == link[link.Count-2])
+                        {
+                            link[link.Count - 1].Deselect();
+                            link.RemoveAt(link.Count - 1);
+                            link[link.Count - 1].Deselect();
+                            link.RemoveAt(link.Count - 1);
+                        }
+                        else if((Vector3.Distance(link.Last().transform.position, sphere.transform.position) < 1.42f) && sphere.GetColor().id == current.id)
                         {
                             if(!link.Contains(sphere))
                             {
@@ -77,7 +84,6 @@ public class TouchManager : MonoBehaviour
         }else if(state == TouchState.Holding)
         {
             state = TouchState.Released;
-            if(link.Count >= minLinkAmount)
             StartCoroutine(nameof(Score));
         }
     }
@@ -88,8 +94,12 @@ public class TouchManager : MonoBehaviour
         foreach (Sphere ball in link)
         {
             ball.Deselect();
-            yield return new WaitForSeconds(0.25f);
-            // ball.gameObject.SetActive(false);
+
+            if(link.Count >= minLinkAmount)
+            {
+                yield return new WaitForSeconds(0.25f);
+                //TODO explode and refill board
+            }
         }
         yield return null;
 
