@@ -54,6 +54,7 @@ public class TouchManager : MonoBehaviour
                             if(!link.Contains(sphere))
                             {
                                 link.Add(sphere);
+                                sphere.Select();
                             }
                         }
                     }
@@ -61,6 +62,7 @@ public class TouchManager : MonoBehaviour
                     {
                         current = sphere.GetColor();
                         link.Add(sphere);
+                        sphere.Select();
                     }
                 }
             }
