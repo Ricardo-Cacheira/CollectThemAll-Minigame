@@ -11,9 +11,9 @@ public class BoardManager : MonoBehaviour
     [ContextMenu("Create Board")]
     public void Create()
     {
-        foreach (Transform ball in board)
+        for (int i = this.transform.childCount; i > 0; --i)
         {
-            DestroyImmediate(ball.gameObject);
+            DestroyImmediate(this.transform.GetChild(0).gameObject);
         }
 
         for (int x = -3; x < 4; x++)
