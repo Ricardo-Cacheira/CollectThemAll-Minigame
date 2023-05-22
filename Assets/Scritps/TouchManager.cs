@@ -97,7 +97,7 @@ public class TouchManager : MonoBehaviour
 
             if(link.Count >= minLinkAmount)
             {
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.05f);
                 //TODO explode and refill board
             }
         }
