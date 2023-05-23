@@ -53,7 +53,6 @@ public class BoardManager : MonoBehaviour
         {
             for (int y = boardSize - 1; y >= 0; y--)            
             {
-                Debug.Log(y);
                 if(boardArray[x,y] == null)
                 {
                     for (int i = y-1; i >= 0; i--)

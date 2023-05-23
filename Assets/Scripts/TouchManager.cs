@@ -32,12 +32,13 @@ public class TouchManager : MonoBehaviour
         diagonaDistance = GameManager.Instance.GetDiagonalDistance();
         
         BoardManager.BoardReady += OnBoardReady;
+        UIManager.GameEndedEvent += OnGameEnded;
     }
 
     private void OnDisable()
     {
         BoardManager.BoardReady -= OnBoardReady;
-        
+        UIManager.GameEndedEvent -= OnGameEnded;
     }
 
     void Update()
@@ -102,7 +103,12 @@ public class TouchManager : MonoBehaviour
 
     private IEnumerator Score()
     {
-        Debug.Log("score: " + link.Count);
+        if(link.Count >= minLinkAmount)
+        {
+            // Debug.Log("score: " + link.Count);
+            MoveMadeEvent?.Invoke(link.Count);
+        }
+
         foreach (Sphere ball in link)
         {
             ball.Deselect();
@@ -116,10 +122,7 @@ public class TouchManager : MonoBehaviour
         }
 
         if(link.Count >= minLinkAmount)
-        {
-            MoveMadeEvent?.Invoke(link.Count);
             GameManager.Instance.boardManager.RefillBoard();
-        }
     }
 
     private void OnBoardReady()
@@ -127,5 +130,12 @@ public class TouchManager : MonoBehaviour
         link = new List<Sphere>();
         current.id = -1;
         state = TouchState.Idle;
+    }
+
+    private void OnGameEnded(bool win)
+    {
+        link = new List<Sphere>();
+        current.id = -1;
+        state = TouchState.Released;
     }
 }

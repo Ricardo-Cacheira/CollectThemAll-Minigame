@@ -41,8 +41,10 @@ public class UIManager : MonoBehaviour
     {
         moves--;
         movesText.text = (moves).ToString();
+        LeanTween.scale(movesText.gameObject, Vector3.one * 2, 1.5f).setEase(LeanTweenType.punch);
         //TODO Tween Animation
 
+        LeanTween.scale(goalText.gameObject, Vector3.one * 2f, 0.05f*amount).setEase(LeanTweenType.punch);
         for (int i = 0; i < amount; i++)
         {
             goal--;
