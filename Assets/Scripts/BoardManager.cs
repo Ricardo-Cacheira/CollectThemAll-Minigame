@@ -37,7 +37,8 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        GameManager.Instance.mainCamera.transform.position = new Vector3(boardSize/2,-(boardSize/2),-10);
+        if(GameManager.Instance != null)
+            GameManager.Instance.mainCamera.transform.position = new Vector3(boardSize/2,-(boardSize/2),-10);
         BoardReady?.Invoke();
     }
 
