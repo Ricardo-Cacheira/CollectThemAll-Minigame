@@ -1,17 +1,27 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    public static Action<bool> GameEndedEvent;
+
     [SerializeField] private TextMeshProUGUI movesText;
     [SerializeField] private TextMeshProUGUI goalText;
     private int moves;
     private int goal;
 
-    private void Start() {
-        Setup(15,60);
+    private void OnEnable()
+    {
+        GameManager.StartGameEvent += Setup;
+        TouchManager.MoveMadeEvent += UpdateUI;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.StartGameEvent -= Setup;
+        TouchManager.MoveMadeEvent -= UpdateUI;
     }
 
     public void Setup(int moves, int goal)
@@ -20,12 +30,6 @@ public class UIManager : MonoBehaviour
         this.goalText.text = goal.ToString();
         this.moves = moves;
         this.movesText.text = moves.ToString();
-    }
-
-    [ContextMenu("TestUI")]
-    public void Test()
-    {
-        UpdateUI(30);
     }
 
     public void UpdateUI(int amount)
@@ -44,8 +48,17 @@ public class UIManager : MonoBehaviour
             goal--;
             goalText.text = (goal).ToString();
             //TODO Tween Animation
-            yield return new WaitForSeconds(0.1f);
+
+            if(goal <= 0)
+            {
+                goal = 0;
+                GameEndedEvent?.Invoke(true);
+                break;
+            }
+            yield return new WaitForSeconds(0.05f);
         }
+        if(moves <= 0 && goal > 0)
+            GameEndedEvent?.Invoke(false);
     }
 
 }

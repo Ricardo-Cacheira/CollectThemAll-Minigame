@@ -1,7 +1,8 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public enum TouchState
 {
@@ -12,6 +13,8 @@ public enum TouchState
 
 public class TouchManager : MonoBehaviour
 {
+    public static Action<int> MoveMadeEvent;
+
     public LayerMask sphereLayer;
     [SerializeField]
     private int minLinkAmount = 3;
@@ -86,6 +89,10 @@ public class TouchManager : MonoBehaviour
         }else if(state == TouchState.Holding)
         {
             state = TouchState.Released;
+
+            if(link.Count >= minLinkAmount)
+                MoveMadeEvent?.Invoke(link.Count);
+
             StartCoroutine(nameof(Score));
         }
     }
@@ -103,10 +110,10 @@ public class TouchManager : MonoBehaviour
                 //TODO explode and refill board
             }
         }
-        yield return null;
 
         link = new List<Sphere>();
-        state = TouchState.Idle;
         current.id = -1;
+        yield return new WaitForSeconds(0.5f);
+        state = TouchState.Idle;
     }
 }
