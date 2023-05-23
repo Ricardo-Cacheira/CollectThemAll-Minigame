@@ -9,8 +9,8 @@ public class BoardManager : MonoBehaviour
     public Transform board;
     public GameObject sphere;
     [Space]
-    public float spacing = 1.15f;
     public int boardSize = 7;
+    public Sphere[,] boardArray;
 
     [ContextMenu("Create Board")]
     public void Create()
@@ -19,15 +19,17 @@ public class BoardManager : MonoBehaviour
         {
             DestroyImmediate(this.transform.GetChild(0).gameObject);
         }
-        float edge = (spacing*3);
-        int size = (int)Math.Ceiling(boardSize/2f);
-        for (float x = -edge; x < size; x+= spacing)
+        boardArray = new Sphere[boardSize,boardSize];
+        for (int x = 0; x < boardSize; x++)
         {
-            for (float y = edge; y > -size; y-= spacing)
+            for (int y = 0; y < boardSize; y++)
             {
-                // Debug.Log(x + "," + y);
-                Instantiate(sphere, new Vector3(x, y, 0), Quaternion.identity, board);
+                Debug.Log(x + "," + y);
+                var obj = Instantiate(sphere, new Vector3(x, -y, 0), Quaternion.identity, board);
+                boardArray[x,y] = obj.GetComponent<Sphere>();
             }
         }
+
+        Camera.main.transform.position = new Vector3(boardSize/2,-(boardSize/2),-10);
     }
 }

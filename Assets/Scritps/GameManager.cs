@@ -54,6 +54,6 @@ public class GameManager : MonoBehaviour
 
     public float GetDiagonalDistance()
     {
-        return Vector2.Distance(Vector2.zero, Vector2.one * boardManager.spacing)+ 0.05f;
+        return Vector2.Distance(Vector2.zero, Vector2.one)+ 0.05f;
     }
 }

@@ -25,6 +25,7 @@ public class TouchManager : MonoBehaviour
     private Camera mainCamera;
     private SColor current;
     private float diagonaDistance;
+    private int[] shifts;
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class TouchManager : MonoBehaviour
         state = TouchState.Idle;
         current.id = -1;
         diagonaDistance = GameManager.Instance.GetDiagonalDistance();
+        shifts = new int[GameManager.Instance.boardManager.boardSize];
     }
 
     void Update()
@@ -106,6 +108,7 @@ public class TouchManager : MonoBehaviour
 
             if(link.Count >= minLinkAmount)
             {
+                Destroy(ball.gameObject);
                 yield return new WaitForSeconds(0.05f);
                 //TODO explode and refill board
             }
