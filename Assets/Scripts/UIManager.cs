@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI goalText;
     private int moves;
     private int goal;
+    [Space]
+    [SerializeField] private RectTransform popup;
+    [SerializeField] private TextMeshProUGUI resultMessage;
+
 
     private void OnEnable()
     {
@@ -52,13 +56,25 @@ public class UIManager : MonoBehaviour
             if(goal <= 0)
             {
                 goal = 0;
-                GameEndedEvent?.Invoke(true);
+                SendGameEndedEvent(true);
                 break;
             }
             yield return new WaitForSeconds(0.05f);
         }
         if(moves <= 0 && goal > 0)
-            GameEndedEvent?.Invoke(false);
+            SendGameEndedEvent(false);
     }
 
+    private void SendGameEndedEvent(bool win)
+    {
+        popup.gameObject.SetActive(true);
+        resultMessage.text = win ? "You WON!" : "All out<br>of moves...";
+        GameEndedEvent?.Invoke(win);
+    }
+
+    public void Restart()
+    {
+        GameManager.Instance.Restart();
+        popup.gameObject.SetActive(false);
+    }
 }

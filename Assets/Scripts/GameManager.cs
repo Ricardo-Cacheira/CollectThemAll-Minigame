@@ -26,17 +26,6 @@ public class GameManager : MonoBehaviour
         Instance = this;        
         mainCamera = Camera.main;
     }
-
-    private void OnEnable()
-    {
-        UIManager.GameEndedEvent += OnGameEnded;
-    }
-
-    private void OnDisable()
-    {
-        UIManager.GameEndedEvent -= OnGameEnded;
-    }
-
     private void Start()
     {
         StartGame();
@@ -48,10 +37,10 @@ public class GameManager : MonoBehaviour
         StartGameEvent?.Invoke(Random.Range(10,18), Random.Range(5,11)*10);
     }
 
-    private void OnGameEnded(bool win)
+    public void Restart()
     {
-        //TODO Show PopUp
-        Debug.Log("You " + (win ? "WON!" : "Lost :("));
+        StartGame();
+        boardManager.Create();
     }
 
     public float GetDiagonalDistance()
