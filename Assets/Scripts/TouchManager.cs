@@ -22,13 +22,11 @@ public class TouchManager : MonoBehaviour
     private TouchState state;
     [SerializeField]
     private List<Sphere> link;
-    private Camera mainCamera;
     private SColor current;
     private float diagonaDistance;
 
     private void OnEnable()
     {
-        mainCamera = Camera.main;
         diagonaDistance = GameManager.Instance.GetDiagonalDistance();
         
         BoardManager.BoardReady += OnBoardReady;
@@ -49,9 +47,9 @@ public class TouchManager : MonoBehaviour
             if(state == TouchState.Idle)
                 state = TouchState.Holding;
 
-            Vector3 pointerPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 pointerPosition = GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(pointerPosition, mainCamera.transform.TransformDirection(Vector3.forward), out hit, 15, sphereLayer))
+            if (Physics.Raycast(pointerPosition, GameManager.Instance.mainCamera.transform.TransformDirection(Vector3.forward), out hit, 15, sphereLayer))
             {
 
                 Sphere sphere = hit.collider.GetComponent<Sphere>();
@@ -73,8 +71,11 @@ public class TouchManager : MonoBehaviour
                         {
                             if(!link.Contains(sphere))
                             {
-                                link.Add(sphere);
+                                Debug.Log("aishfsuidfh");
                                 sphere.Select();
+                                link[link.Count - 1].current = false;
+                                link[link.Count - 1].Link(sphere.transform.position);
+                                link.Add(sphere);
                             }
                         }
                     }
@@ -117,12 +118,13 @@ public class TouchManager : MonoBehaviour
             {
                 Destroy(ball.gameObject);
                 yield return new WaitForSeconds(0.05f);
-                //TODO explode and refill board
             }
         }
 
         if(link.Count >= minLinkAmount)
             GameManager.Instance.boardManager.RefillBoard();
+        else
+            OnBoardReady();
     }
 
     private void OnBoardReady()

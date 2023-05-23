@@ -19,10 +19,12 @@ public class GameManager : MonoBehaviour
 
     public List<SColor> colors;
     public BoardManager boardManager;
+    public Camera mainCamera;
 
     private void Awake()
     {
-        Instance = this;
+        Instance = this;        
+        mainCamera = Camera.main;
     }
 
     private void OnEnable()
