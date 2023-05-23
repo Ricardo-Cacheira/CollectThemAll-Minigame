@@ -55,9 +55,6 @@ public class TouchManager : MonoBehaviour
                 Sphere sphere = hit.collider.GetComponent<Sphere>();
                 if(sphere != null)
                 {
-                    // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-                    // Debug.Log("Did Hit");
-
                     if(link.Count > 0)
                     {
                         if(link.Count > 1 && sphere == link[link.Count-2])
@@ -71,7 +68,6 @@ public class TouchManager : MonoBehaviour
                         {
                             if(!link.Contains(sphere))
                             {
-                                Debug.Log("aishfsuidfh");
                                 sphere.Select();
                                 link[link.Count - 1].current = false;
                                 link[link.Count - 1].Link(sphere.transform.position);
@@ -87,12 +83,7 @@ public class TouchManager : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                //* Do nothing
-                // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-                // Debug.Log("Did not Hit");
-            }
+
         }else if(state == TouchState.Holding)
         {
             state = TouchState.Released;
