@@ -25,13 +25,11 @@ public class TouchManager : MonoBehaviour
     private Camera mainCamera;
     private SColor current;
     private float diagonaDistance;
-    private int[] shifts;
 
     private void OnEnable()
     {
         mainCamera = Camera.main;
         diagonaDistance = GameManager.Instance.GetDiagonalDistance();
-        shifts = new int[GameManager.Instance.boardManager.boardSize];
         
         BoardManager.BoardReady += OnBoardReady;
     }
@@ -97,8 +95,6 @@ public class TouchManager : MonoBehaviour
         {
             state = TouchState.Released;
 
-            if(link.Count >= minLinkAmount)
-                MoveMadeEvent?.Invoke(link.Count);
 
             StartCoroutine(nameof(Score));
         }
@@ -119,7 +115,11 @@ public class TouchManager : MonoBehaviour
             }
         }
 
-        GameManager.Instance.boardManager.RefillBoard();
+        if(link.Count >= minLinkAmount)
+        {
+            MoveMadeEvent?.Invoke(link.Count);
+            GameManager.Instance.boardManager.RefillBoard();
+        }
     }
 
     private void OnBoardReady()
