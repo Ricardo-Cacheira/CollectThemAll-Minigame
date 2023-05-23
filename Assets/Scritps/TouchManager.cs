@@ -27,14 +27,19 @@ public class TouchManager : MonoBehaviour
     private float diagonaDistance;
     private int[] shifts;
 
-    private void Awake()
+    private void OnEnable()
     {
         mainCamera = Camera.main;
-        link = new List<Sphere>();
-        state = TouchState.Idle;
-        current.id = -1;
         diagonaDistance = GameManager.Instance.GetDiagonalDistance();
         shifts = new int[GameManager.Instance.boardManager.boardSize];
+        
+        BoardManager.BoardReady += OnBoardReady;
+    }
+
+    private void OnDisable()
+    {
+        BoardManager.BoardReady -= OnBoardReady;
+        
     }
 
     void Update()
@@ -114,9 +119,13 @@ public class TouchManager : MonoBehaviour
             }
         }
 
+        GameManager.Instance.boardManager.RefillBoard();
+    }
+
+    private void OnBoardReady()
+    {
         link = new List<Sphere>();
         current.id = -1;
-        yield return new WaitForSeconds(0.5f);
         state = TouchState.Idle;
     }
 }

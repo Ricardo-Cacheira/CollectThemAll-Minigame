@@ -6,11 +6,18 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class BoardManager : MonoBehaviour
 {
+    public static Action BoardReady;
+
     public Transform board;
     public GameObject sphere;
     [Space]
     public int boardSize = 7;
     public Sphere[,] boardArray;
+
+    private void Start()
+    {
+        Create();
+    }
 
     [ContextMenu("Create Board")]
     public void Create()
@@ -31,5 +38,12 @@ public class BoardManager : MonoBehaviour
         }
 
         Camera.main.transform.position = new Vector3(boardSize/2,-(boardSize/2),-10);
+        BoardReady?.Invoke();
+    }
+
+    public void RefillBoard()
+    {
+        //TODO fill empty spaces
+        BoardReady?.Invoke();
     }
 }
