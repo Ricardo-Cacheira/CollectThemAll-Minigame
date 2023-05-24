@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Balls
+  m_Name: Sphere
   m_Shader: {fileID: 4800000, guid: d06eff1911f175b4b8cc6b84d99dab45, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

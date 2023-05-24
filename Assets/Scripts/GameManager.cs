@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
         Instance = this;        
         mainCamera = Camera.main;
     }
+
     private void Start()
     {
         StartGame();

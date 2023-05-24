@@ -41,17 +41,18 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        //Input.GetTouch
+        //Check for input
         if (state != TouchState.Released && Input.GetMouseButton(0))
         {
             if(state == TouchState.Idle)
                 state = TouchState.Holding;
 
+            //Check for collisions
             Vector3 pointerPosition = GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(pointerPosition, GameManager.Instance.mainCamera.transform.TransformDirection(Vector3.forward), out hit, 15, sphereLayer))
             {
-
+                //If there's a link ongoing, validate new collision, else start new link
                 Sphere sphere = hit.collider.GetComponent<Sphere>();
                 if(sphere != null)
                 {
@@ -68,9 +69,9 @@ public class TouchManager : MonoBehaviour
                         {
                             if(!link.Contains(sphere))
                             {
-                                sphere.Select();
-                                link[link.Count - 1].current = false;
+                                link[link.Count - 1].SetCurrent(false);
                                 link[link.Count - 1].Link(sphere.transform.position);
+                                sphere.Select();
                                 link.Add(sphere);
                             }
                         }
@@ -96,10 +97,7 @@ public class TouchManager : MonoBehaviour
     private IEnumerator Score()
     {
         if(link.Count >= minLinkAmount)
-        {
-            // Debug.Log("score: " + link.Count);
             MoveMadeEvent?.Invoke(link.Count);
-        }
 
         foreach (Sphere ball in link)
         {

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Sphere : MonoBehaviour
 {
-    public bool current = false;
     [SerializeField]  private SColor sColor;
     [SerializeField]  private GameObject highlight;
     [SerializeField]  private LineRenderer line;
+    private bool current = false;
     private Renderer rend;
 
     private void OnEnable()
@@ -21,6 +21,7 @@ public class Sphere : MonoBehaviour
 
     private void Update()
     {
+        //Control the line
         if(current)
         {
             Vector3 mousePos = GameManager.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -36,6 +37,7 @@ public class Sphere : MonoBehaviour
         }
     }
 
+    //Animate to final position
     public void Fall()
     {
         Vector3 target = transform.position;
@@ -43,6 +45,7 @@ public class Sphere : MonoBehaviour
         LeanTween.move(gameObject, target, 0.1f * transform.position.y).setEase(LeanTweenType.easeInCirc);
     }
 
+    //Enable Highlight and set to Current = true
     public void Select()
     {
         highlight.SetActive(true);
@@ -52,6 +55,7 @@ public class Sphere : MonoBehaviour
         current = true;
     }
 
+    //Remove Highlight and line
     public void Deselect()
     {
         highlight.SetActive(false);
@@ -61,6 +65,7 @@ public class Sphere : MonoBehaviour
         current = false;
     }
 
+    //Set Line to the next Sphere in the link
     public void Link(Vector3 position)
     {
         Vector3 direction = position - transform.position;
@@ -74,4 +79,5 @@ public class Sphere : MonoBehaviour
     }
 
     public SColor GetColor() => sColor;
+    public void SetCurrent(bool value) => current = value;
 }

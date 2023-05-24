@@ -10,9 +10,9 @@ public class BoardManager : MonoBehaviour
 
     public Transform board;
     public GameObject sphere;
-    [Space]
     public int boardSize = 7;
-    public Sphere[,] boardArray;
+    [Space]
+    private Sphere[,] boardArray;
 
     private void Start()
     {
@@ -22,11 +22,15 @@ public class BoardManager : MonoBehaviour
     [ContextMenu("Create Board")]
     public void Create()
     {
+        //Clear existing objects
         for (int i = this.transform.childCount; i > 0; --i)
         {
             DestroyImmediate(this.transform.GetChild(0).gameObject);
         }
+
         boardArray = new Sphere[boardSize,boardSize];
+
+        // Populate array and Instantiate spheres
         for (int x = 0; x < boardSize; x++)
         {
             for (int y = 0; y < boardSize; y++)
@@ -39,6 +43,7 @@ public class BoardManager : MonoBehaviour
 
         if(GameManager.Instance != null)
             GameManager.Instance.mainCamera.transform.position = new Vector3(boardSize/2,-(boardSize/2),-10);
+
         BoardReady?.Invoke();
     }
 
@@ -62,7 +67,6 @@ public class BoardManager : MonoBehaviour
                         {
                             boardArray[x,y] = boardArray[x,i];
                             boardArray[x,i] = null;
-                            // boardArray[x,y].transform.position = new Vector3(x,-y,0);
                             LeanTween.move(boardArray[x,y].gameObject, new Vector3(x,-y,0), 0.25f).setEase(LeanTweenType.easeInCubic);
                             break;
                         }
